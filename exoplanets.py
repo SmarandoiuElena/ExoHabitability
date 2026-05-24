@@ -33,5 +33,17 @@ df_hwc['pl_name'] = df_hwc['P_NAME'].copy()
 df_merge = df_nasa.merge(df_hwc, on = 'pl_name', how = "inner")
 # We get rid of the rows where thins are missing
 df_fin = df_merge.dropna()
-
+# save the file
 df_fin.to_csv("exoplanests.csv", index = False)
+
+# We split the data for the train and test files
+train, test = train_test_split(
+    df_fin,
+    test_size = 0.25,
+    random_state = 42,
+    stratify=df_fin["P_HABITABLE"]
+)
+
+# Saving the files
+train.to_csv("train.csv", index=False)
+test.to_csv("test.csv", index=False)
